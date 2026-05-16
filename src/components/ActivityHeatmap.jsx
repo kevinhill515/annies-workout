@@ -2,15 +2,17 @@ import { fmtDate } from '../utils/dates.js';
 
 export default function ActivityHeatmap({ logs, walks, onPickDate }) {
   const today = new Date();
+  // Align grid to Monday-start. Days back to most recent Monday:
+  // Mon=0, Tue=1, Wed=2, Thu=3, Fri=4, Sat=5, Sun=6
   const todayDay = today.getDay();
-  const daysBackToSat = (todayDay + 1) % 7;
-  const startSat = new Date(today);
-  startSat.setDate(today.getDate() - daysBackToSat - 21);
+  const daysBackToMon = (todayDay - 1 + 7) % 7;
+  const startMon = new Date(today);
+  startMon.setDate(today.getDate() - daysBackToMon - 21);
 
   const days = [];
   for (let i = 0; i < 28; i++) {
-    const d = new Date(startSat);
-    d.setDate(startSat.getDate() + i);
+    const d = new Date(startMon);
+    d.setDate(startMon.getDate() + i);
     const ds = fmtDate(d);
     const count = logs.filter((l) => l.date === ds).length + walks.filter((w) => w.date === ds).length;
     const isFuture = d > today;
@@ -31,7 +33,7 @@ export default function ActivityHeatmap({ logs, walks, onPickDate }) {
         </div>
       </div>
       <div className="grid grid-cols-7 gap-1.5">
-        {['S','S','M','T','W','T','F'].map((d, i) => (
+        {['M','T','W','T','F','S','S'].map((d, i) => (
           <div key={i} className="text-[10px] text-stone-400 text-center">{d}</div>
         ))}
         {days.map((d) => (
