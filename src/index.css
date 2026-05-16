@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+/* ---- base: warm light theme, larger fonts for older eyes ---- */
+html, body, #root { height: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+  background-color: #faf7f2;
+  color: #1f2937;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* iOS safe-area */
+.safe-bottom { padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
+.safe-top    { padding-top: max(0.5rem, env(safe-area-inset-top)); }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+button, [role="button"] { user-select: none; }
+
+/* sheet animations */
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.sheet-enter { animation: slideUp 220ms cubic-bezier(.2,.7,.3,1); }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.fade-in { animation: fadeIn 160ms ease-out; }
+
+/* print: just the workout, no chrome */
+@media print {
+  nav, header, .no-print { display: none !important; }
+  body { background: white; color: black; }
+}
